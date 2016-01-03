@@ -9,6 +9,71 @@
 
 #include "globals.h"
 
+//TAGLIB
+#include <fileref.h>
+#include <tag.h>
+#include <tpropertymap.h>
+#include <iostream>
+#include <iomanip>
+#include <stdio.h>
+
+//The code below is from taglib examples
+int read_tags(int argc,const char *argv)
+{
+  for(int i = 0; i < argc; i++) {
+
+    std::cout << "******************** \"" << argv << "\" ********************" << endl;
+
+    TagLib::FileRef f(argv);
+
+    if(!f.isNull() && f.tag()) {
+
+      TagLib::Tag *tag = f.tag();
+
+      std::cout << "-- TAG (basic) --" << endl;
+      std::cout << "title   - \"" << tag->title()   << "\"" << std::endl;
+      std::cout << "artist  - \"" << tag->artist()  << "\"" << std::endl;
+      std::cout << "album   - \"" << tag->album()   << "\"" << std::endl;
+      std::cout << "year    - \"" << tag->year()    << "\"" << std::endl;
+      std::cout << "comment - \"" << tag->comment() << "\"" << std::endl;
+      std::cout << "track   - \"" << tag->track()   << "\"" << std::endl;
+      std::cout << "genre   - \"" << tag->genre()   << "\"" << std::endl;
+
+      TagLib::PropertyMap tags = f.file()->properties();
+
+      unsigned int longest = 0;
+      for(TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
+        if (i->first.size() > longest) {
+          longest = i->first.size();
+        }
+      }
+
+      std::cout << "-- TAG (properties) --" << std::endl;
+      for(TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
+        for(TagLib::StringList::ConstIterator j = i->second.begin(); j != i->second.end(); ++j) {
+          std::cout << left << std::setw(longest) << i->first << " - " << '"' << *j << '"' << std::endl;
+        }
+      }
+
+    }
+
+    if(!f.isNull() && f.audioProperties()) {
+
+      TagLib::AudioProperties *properties = f.audioProperties();
+
+      int seconds = properties->length() % 60;
+      int minutes = (properties->length() - seconds) / 60;
+
+      std::cout << "-- AUDIO --" << std::endl;
+      std::cout << "bitrate     - " << properties->bitrate() << std::endl;
+      std::cout << "sample rate - " << properties->sampleRate() << std::endl;
+      std::cout << "channels    - " << properties->channels() << std::endl;
+      //std::cout << "length      - " << minutes << ":" << setfill('0') << setw(2) << seconds << std::endl;
+    }
+  }
+  return 0;
+}
+//end
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,9 +97,11 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::playFile(QString fname){
+
     mediaPlayer.setMedia(QUrl::fromLocalFile(fname));
     mediaPlayer.play();
-    qDebug() << mediaPlayer.metaData("QMediaMetaData::Title").toString() << "adsd";
+    //qDebug() << mediaPlayer.metaData("QMediaMetaData::Title").toString() << "adsd";
+    //read_tags(1,fname.toStdString().c_str());
     isPaused = false;
 }
 
@@ -54,9 +121,9 @@ void MainWindow::on_playFile_clicked()
 }
 
 void MainWindow::open_sqlite_db() {
-    qDebug("DEBUG 1\n");
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("D:\\pidor2");
+    db.setDatabaseName(QDir::homePath() + "/myplayer.db");
+    qDebug() << QDir::homePath();
     if (!db.open()) {
         QMessageBox::critical(0, qApp->tr("Cannot open database"),
             qApp->tr("Unable to establish a database connection.\n"
@@ -87,10 +154,16 @@ void MainWindow::ListDirRecursive(QString directory)
  while(iterator.hasNext())
  {
  iterator.next();
- //qDebug() << iterator.fileInfo().absoluteFilePath();
- //mediaPlayer.setMedia(QUrl::fromLocalFile(iterator.fileInfo().absoluteFilePath()));
- //qDebug() << "Test: " << mediaPlayer.metaData(QMediaMetaData::Title).toString();
- query.exec("insert into "+ _globals->current_selected_pls +" (Path, Album, Track) values('" + iterator.fileInfo().absoluteFilePath() + "', " + "'" + "ALBUM_VAR" + "'," + "'" + "TRACK_VAR" "')");
+    TagLib::FileRef f(iterator.fileInfo().absoluteFilePath().toStdWString().c_str());
+    QString Album_var;
+    if(!f.isNull() && f.tag()) {
+        TagLib::Tag *tag = f.tag();
+        Album_var = QString::fromStdWString(tag->album().toWString());
+    }
+    else {
+        Album_var = "Unknown";
+    }
+    query.exec("insert into "+ _globals->current_selected_pls +" (Path, Album, Track) values('" + iterator.fileInfo().absoluteFilePath() + "', " + "'" + Album_var + "'," + "'" + "TRACK_VAR" "')");
  }
 }
 

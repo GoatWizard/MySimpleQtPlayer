@@ -13,6 +13,11 @@ TEMPLATE = app
 
 QMAKE_CXXFLAGS += -std=c++11
 
+#INCLUDEPATH += $$PWD/thirdparty/win32/taglib/include/taglib
+#LIBS += -L"$$_PRO_FILE_PWD_/thirdparty/win32/taglib/lib" -ltag -ltag_c
+
+include(thirdparty\taglib\taglib.pro)
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     playlist_form.cpp \
