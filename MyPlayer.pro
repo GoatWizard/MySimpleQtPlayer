@@ -34,3 +34,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     playlist_form.ui \
     info_pannel.ui
+
+RESOURCES += \
+    images.qrc

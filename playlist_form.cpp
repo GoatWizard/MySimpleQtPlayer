@@ -5,9 +5,7 @@
 #include <QtSql>
 
 #include "globals.h"
-#include "myplayertreewidgetitem.h"
-
-void fillPlaylist();
+//#include "myplayertreewidgetitem.h"
 
 
 playlist_form::playlist_form(QWidget *parent) :
@@ -50,7 +48,7 @@ void playlist_form::on_newPlaylist_clicked()
         QSqlQuery query;
         query.exec("create table if not exists Playlists (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name varchar(20))");
         query.exec("insert into Playlists (Name) values('" + text + "')");
-        query.exec("create table "+ text +" (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , Path varchar(20), Album varchar(20), Track varchar(20))");
+        query.exec("create table " + QString("TBL") + text.toLocal8Bit().toHex() +" (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , Path varchar(20), Album varchar(20), Track varchar(20))");
         //
         ui->PlaylistWidget->addItem(text);
         _globals->current_selected_pls = text;
@@ -61,16 +59,19 @@ void playlist_form::on_newPlaylist_clicked()
 void playlist_form::on_PlaylistWidget_itemClicked(QListWidgetItem *item)
 {
      _globals->current_selected_pls = item->text();
-     fillPlaylist();
+     _globals->fillPlaylist();
 }
-
+/*
 void fillPlaylist()
 {
     _globals->playlistTree->clear(); //CHECK THIS MAY CAUSE MEMORY LEAK
 
     QSqlQuery albquery;
-    albquery.exec("SELECT DISTINCT Album FROM " + _globals->current_selected_pls);
-
+    QString querys = "SELECT DISTINCT Album FROM " + QString("TBL") + _globals->current_selected_pls.toLocal8Bit().toHex() ;
+    albquery.prepare(querys);
+    //albquery.bindValue(":valCsp", _globals->current_selected_pls);
+    albquery.exec();
+    qDebug() << albquery.lastError() << _globals->current_selected_pls.toLocal8Bit().toHex();
     while (albquery.next()) { ///Sort by album
         MyPlayerTreeWidgetItem * albumitem =new MyPlayerTreeWidgetItem(_globals->playlistTree);;
         albumitem->setText(0,albquery.value(0).toString());
@@ -79,7 +80,7 @@ void fillPlaylist()
         QSqlQuery query;
         //query.exec("SELECT Id,Track FROM " + _globals->current_selected_pls + " WHERE Album ='" + albquery.value(0).toString()+ "'");
 
-        QString querystring = "SELECT Id,Track FROM " + _globals->current_selected_pls + " WHERE Album = :valAlbum";
+        QString querystring = "SELECT Id,Track FROM " + QString("TBL") + _globals->current_selected_pls.toLocal8Bit().toHex() + " WHERE Album = :valAlbum";
         query.prepare(querystring);
         query.bindValue(":valAlbum",albquery.value(0).toString());
         query.exec();
@@ -92,3 +93,4 @@ void fillPlaylist()
         }
     }
 }
+*/

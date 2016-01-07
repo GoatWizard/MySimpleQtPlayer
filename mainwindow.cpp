@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QtWidgets>
-#include <QMediaMetaData>
+//#include <QMediaMetaData>
 
 #include "globals.h"
 #include "myplayertreewidgetitem.h"
@@ -99,10 +99,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::playFile(QString fname){
-
+void MainWindow::playFile(QString fname)
+{
     mediaPlayer.setMedia(QUrl::fromLocalFile(fname));
     mediaPlayer.play();
+    QFileInfo pfile(fname);
+    //qDebug() << pfile.dir().absolutePath();
+    QStringList filters;
+    filters << "*.png" << "*.jpg" << "*.jpe";
+
+    QDirIterator iterator (pfile.dir().absolutePath(), filters, QDir::Files , QDirIterator::Subdirectories);
+
+    while(iterator.hasNext()){
+        iterator.next();
+        qDebug() << iterator.fileInfo().absoluteFilePath();
+        ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
+
+    }
     //qDebug() << mediaPlayer.metaData("QMediaMetaData::Title").toString() << "adsd";
     //read_tags(1,fname.toStdString().c_str());
     bIsPaused = false;
@@ -142,9 +155,9 @@ void MainWindow::open_sqlite_db()
 void MainWindow::ListDirRecursive(QString directory)
 {
     QStringList filters;
-    filters << "*.mp3" << "*.ogg" << "*.flac";
+    filters << "*.mp3" << "*.ogg" << "*.flac"; ///CHECK
 
-    QDirIterator iterator (directory, filters, QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator iterator (directory, filters, QDir::Files , QDirIterator::Subdirectories);//| QDir::NoSymLinks
 
     QSqlQuery query;
     query.exec("PRAGMA page_size = 4096");
@@ -170,7 +183,7 @@ void MainWindow::ListDirRecursive(QString directory)
         else {
             Album_var = "Unknown";
         }
-        QString querystring = "insert into "+ _globals->current_selected_pls + " (Path, Album, Track) values (:valPath, :valAlbum, :valTrack);";
+        QString querystring = "insert into " + QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex() + " (Path, Album, Track) values (:valPath, :valAlbum, :valTrack);";
         query.prepare(querystring);
         query.bindValue(":valPath", iterator.fileInfo().absoluteFilePath());//.toLocal8Bit().toHex());
         query.bindValue(":valAlbum", Album_var);
@@ -189,12 +202,13 @@ void MainWindow::ListDirRecursive(QString directory)
 void MainWindow::on_pushButton_4_clicked()
 {
 
-    const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
+    //const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
     const QString dirPath = QFileDialog::getExistingDirectory();
+    if(!dirPath.isEmpty()){
     ListDirRecursive(dirPath);
-    ///_globals->initializeModel();//For refreshing playlist //CHECK
+    _globals->fillPlaylist(); //For refreshing playlist
+    }
 }
-
 void MainWindow::on_PlayButton_clicked()
 {
 
@@ -202,7 +216,10 @@ void MainWindow::on_PlayButton_clicked()
     qDebug() << selecteditem->IdNum;
 
     QSqlQuery query;
-    query.exec("SELECT Path FROM "+ _globals->current_selected_pls  + " WHERE Id = " + QString::number(selecteditem->IdNum) +";");
+    QString qvalue = "SELECT Path FROM "+QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex()+" WHERE Id = " + QString::number(selecteditem->IdNum) +";";
+    query.prepare(qvalue);
+    //query.bindValue(":valCsp", QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex());
+    query.exec();
     while (query.next()) {
         QString filepath = query.value(0).toString();
         playFile(filepath);

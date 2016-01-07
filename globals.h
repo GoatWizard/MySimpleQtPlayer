@@ -8,6 +8,8 @@ class globals
 {
 public:
     globals();
+    void fillPlaylist();
+
     QString current_selected_pls;
     QTreeWidget * playlistTree;
 };
