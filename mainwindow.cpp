@@ -8,6 +8,7 @@
 #include <QMediaMetaData>
 
 #include "globals.h"
+#include "myplayertreewidgetitem.h"
 
 //TAGLIB
 #include <fileref.h>
@@ -17,12 +18,13 @@
 #include <iomanip>
 #include <stdio.h>
 
+/*
 //The code below is from taglib examples
 int read_tags(int argc,const char *argv)
 {
   for(int i = 0; i < argc; i++) {
 
-    std::cout << "******************** \"" << argv << "\" ********************" << endl;
+
 
     TagLib::FileRef f(argv);
 
@@ -30,7 +32,6 @@ int read_tags(int argc,const char *argv)
 
       TagLib::Tag *tag = f.tag();
 
-      std::cout << "-- TAG (basic) --" << endl;
       std::cout << "title   - \"" << tag->title()   << "\"" << std::endl;
       std::cout << "artist  - \"" << tag->artist()  << "\"" << std::endl;
       std::cout << "album   - \"" << tag->album()   << "\"" << std::endl;
@@ -62,7 +63,7 @@ int read_tags(int argc,const char *argv)
       TagLib::AudioProperties *properties = f.audioProperties();
 
       int seconds = properties->length() % 60;
-      int minutes = (properties->length() - seconds) / 60;
+      //int minutes = (properties->length() - seconds) / 60;
 
       std::cout << "-- AUDIO --" << std::endl;
       std::cout << "bitrate     - " << properties->bitrate() << std::endl;
@@ -74,16 +75,18 @@ int read_tags(int argc,const char *argv)
   return 0;
 }
 //end
+*/
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     open_sqlite_db();
     _globals = new globals; // Create an object that stores global variables and functions
 
-    ui->PlaylistView->setModel(_globals->model);
+    _globals->playlistTree = ui->PlaylistTreeWidget;//new QTreeWidget;
+    _globals->playlistTree->setHeaderHidden(true);
+
+    //ui->PlaylistListLayout->addWidget(_globals->playlistTree);
 
     plf = new playlist_form;
     ipn = new info_pannel;
@@ -102,7 +105,7 @@ void MainWindow::playFile(QString fname){
     mediaPlayer.play();
     //qDebug() << mediaPlayer.metaData("QMediaMetaData::Title").toString() << "adsd";
     //read_tags(1,fname.toStdString().c_str());
-    isPaused = false;
+    bIsPaused = false;
 }
 
 
@@ -120,7 +123,8 @@ void MainWindow::on_playFile_clicked()
     openFile();
 }
 
-void MainWindow::open_sqlite_db() {
+void MainWindow::open_sqlite_db()
+{
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(QDir::homePath() + "/myplayer.db");
     qDebug() << QDir::homePath();
@@ -137,34 +141,49 @@ void MainWindow::open_sqlite_db() {
 
 void MainWindow::ListDirRecursive(QString directory)
 {
+    QStringList filters;
+    filters << "*.mp3" << "*.ogg" << "*.flac";
 
- QStringList filters;
- filters << "*.mp3" << "*.ogg" << "*.flac";
- //dir.setNameFilters(filters);
+    QDirIterator iterator (directory, filters, QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
- QDirIterator iterator (directory, filters, QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QSqlQuery query;
+    query.exec("PRAGMA page_size = 4096");
+    query.exec("PRAGMA cache_size = 262 144");
+    query.exec("PRAGMA temp_store = MEMORY");
+    query.exec("PRAGMA journal_mode = OFF");
+    query.exec("PRAGMA locking_mode = EXCLUSIVE");
+    query.exec("PRAGMA synchronous = OFF");
 
- QSqlQuery query;
-         query.exec("PRAGMA page_size = 4096");
-         query.exec("PRAGMA cache_size = 262 144");
-         query.exec("PRAGMA temp_store = MEMORY");
-         query.exec("PRAGMA journal_mode = OFF");
-         query.exec("PRAGMA locking_mode = EXCLUSIVE");
-         query.exec("PRAGMA synchronous = OFF");
- while(iterator.hasNext())
- {
- iterator.next();
-    TagLib::FileRef f(iterator.fileInfo().absoluteFilePath().toStdWString().c_str());
-    QString Album_var;
-    if(!f.isNull() && f.tag()) {
-        TagLib::Tag *tag = f.tag();
-        Album_var = QString::fromStdWString(tag->album().toWString());
+    while(iterator.hasNext()){
+        iterator.next();
+        #ifdef _WIN32
+            TagLib::FileRef f(iterator.fileInfo().absoluteFilePath().toStdWString().c_str());
+        #else
+            TagLib::FileRef f(iterator.fileInfo().absoluteFilePath().toStdString().c_str());
+        #endif
+        QString Album_var,Track_var;
+        if(!f.isNull() && f.tag()) {
+            TagLib::Tag *tag = f.tag();
+            Album_var = QString::fromStdWString(tag->album().toWString());
+            Track_var = QString::fromStdWString(tag->title().toWString());
+        }
+        else {
+            Album_var = "Unknown";
+        }
+        QString querystring = "insert into "+ _globals->current_selected_pls + " (Path, Album, Track) values (:valPath, :valAlbum, :valTrack);";
+        query.prepare(querystring);
+        query.bindValue(":valPath", iterator.fileInfo().absoluteFilePath());//.toLocal8Bit().toHex());
+        query.bindValue(":valAlbum", Album_var);
+        query.bindValue(":valTrack", Track_var);
+        query.exec();
+        //query.finish();
+        ///query.exec("insert into "+ _globals->current_selected_pls + " (Path, Album, Track) values (':valPath', ':valAlbum', ':valTrack');");
+
+
+        //query.exec("insert into "+ _globals->current_selected_pls +" (Path, Album, Track) values('" + ":valA" + "'', " + "'" + Album_var + "'," + "'" + Track_var + "')");
+
+        //qDebug() <<  query.lastError();
     }
-    else {
-        Album_var = "Unknown";
-    }
-    query.exec("insert into "+ _globals->current_selected_pls +" (Path, Album, Track) values('" + iterator.fileInfo().absoluteFilePath() + "', " + "'" + Album_var + "'," + "'" + "TRACK_VAR" "')");
- }
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -173,36 +192,32 @@ void MainWindow::on_pushButton_4_clicked()
     const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
     const QString dirPath = QFileDialog::getExistingDirectory();
     ListDirRecursive(dirPath);
-    _globals->initializeModel();//For refreshing playlist
+    ///_globals->initializeModel();//For refreshing playlist //CHECK
 }
 
 void MainWindow::on_PlayButton_clicked()
 {
-    QModelIndexList selection = ui->PlaylistView->selectionModel()->selectedIndexes();
-    //CHECK!!!
-    //for(int i=0; i< selection.count(); i++){
-        QModelIndex index = selection.at(0);
-        qint32 selindex = index.row()+1;
-        QSqlQuery query;
-        query.exec("SELECT Path FROM "+ _globals->current_selected_pls +" WHERE Id = "+ QString("%1").arg(selindex) +";");
-        while (query.next()) {
-                 QString filepath = query.value(0).toString();
-                 playFile(filepath);
-        }
 
-    //}
+    MyPlayerTreeWidgetItem * selecteditem = (MyPlayerTreeWidgetItem *)_globals->playlistTree->selectedItems().back();
+    qDebug() << selecteditem->IdNum;
 
+    QSqlQuery query;
+    query.exec("SELECT Path FROM "+ _globals->current_selected_pls  + " WHERE Id = " + QString::number(selecteditem->IdNum) +";");
+    while (query.next()) {
+        QString filepath = query.value(0).toString();
+        playFile(filepath);
+    }
 }
 
 void MainWindow::on_Pause_clicked()
 {
-    if(isPaused){
+    if(bIsPaused){
         mediaPlayer.play();
-        isPaused = false;
+        bIsPaused = false;
     }
     else{
         mediaPlayer.pause();
-        isPaused = true;
+        bIsPaused = true;
     }
 }
 

@@ -22,12 +22,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     playlist_form.cpp \
     globals.cpp \
-    info_pannel.cpp
+    info_pannel.cpp \
+    myplayertreewidgetitem.cpp
 
 HEADERS  += mainwindow.h \
     playlist_form.h \
     globals.h \
-    info_pannel.h
+    info_pannel.h \
+    myplayertreewidgetitem.h
 
 FORMS    += mainwindow.ui \
     playlist_form.ui \

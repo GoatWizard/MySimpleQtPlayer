@@ -5,6 +5,9 @@
 #include <QtSql>
 
 #include "globals.h"
+#include "myplayertreewidgetitem.h"
+
+void fillPlaylist();
 
 
 playlist_form::playlist_form(QWidget *parent) :
@@ -25,7 +28,8 @@ void playlist_form::on_PlaylistWidget_clicked(const QModelIndex &index)
     
 }
 
-void playlist_form::read_db() {
+void playlist_form::read_db()
+{
     QSqlQuery query;
     query.exec("SELECT Name FROM Playlists");
 
@@ -57,5 +61,34 @@ void playlist_form::on_newPlaylist_clicked()
 void playlist_form::on_PlaylistWidget_itemClicked(QListWidgetItem *item)
 {
      _globals->current_selected_pls = item->text();
-     _globals->initializeModel();
+     fillPlaylist();
+}
+
+void fillPlaylist()
+{
+    _globals->playlistTree->clear(); //CHECK THIS MAY CAUSE MEMORY LEAK
+
+    QSqlQuery albquery;
+    albquery.exec("SELECT DISTINCT Album FROM " + _globals->current_selected_pls);
+
+    while (albquery.next()) { ///Sort by album
+        MyPlayerTreeWidgetItem * albumitem =new MyPlayerTreeWidgetItem(_globals->playlistTree);;
+        albumitem->setText(0,albquery.value(0).toString());
+        albumitem->setExpanded(true);
+
+        QSqlQuery query;
+        //query.exec("SELECT Id,Track FROM " + _globals->current_selected_pls + " WHERE Album ='" + albquery.value(0).toString()+ "'");
+
+        QString querystring = "SELECT Id,Track FROM " + _globals->current_selected_pls + " WHERE Album = :valAlbum";
+        query.prepare(querystring);
+        query.bindValue(":valAlbum",albquery.value(0).toString());
+        query.exec();
+
+        while (query.next()) {
+        //qDebug() << query.value(1).toString();
+        MyPlayerTreeWidgetItem * songitem = new MyPlayerTreeWidgetItem(albumitem);
+        songitem->setText(0,query.value(1).toString());
+        songitem->IdNum = query.value(0).toUInt();
+        }
+    }
 }

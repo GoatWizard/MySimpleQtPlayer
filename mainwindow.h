@@ -37,7 +37,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QMediaPlayer mediaPlayer;
-    bool isPaused = true;
+    bool bIsPaused = true;
     void open_sqlite_db();
     void ListDirRecursive(QString directory);
 
