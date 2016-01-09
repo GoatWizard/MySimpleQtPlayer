@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QtWidgets>
 //#include <QMediaMetaData>
+#include <QList>
 
 #include "globals.h"
 #include "myplayertreewidgetitem.h"
@@ -18,65 +19,6 @@
 #include <iomanip>
 #include <stdio.h>
 
-/*
-//The code below is from taglib examples
-int read_tags(int argc,const char *argv)
-{
-  for(int i = 0; i < argc; i++) {
-
-
-
-    TagLib::FileRef f(argv);
-
-    if(!f.isNull() && f.tag()) {
-
-      TagLib::Tag *tag = f.tag();
-
-      std::cout << "title   - \"" << tag->title()   << "\"" << std::endl;
-      std::cout << "artist  - \"" << tag->artist()  << "\"" << std::endl;
-      std::cout << "album   - \"" << tag->album()   << "\"" << std::endl;
-      std::cout << "year    - \"" << tag->year()    << "\"" << std::endl;
-      std::cout << "comment - \"" << tag->comment() << "\"" << std::endl;
-      std::cout << "track   - \"" << tag->track()   << "\"" << std::endl;
-      std::cout << "genre   - \"" << tag->genre()   << "\"" << std::endl;
-
-      TagLib::PropertyMap tags = f.file()->properties();
-
-      unsigned int longest = 0;
-      for(TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
-        if (i->first.size() > longest) {
-          longest = i->first.size();
-        }
-      }
-
-      std::cout << "-- TAG (properties) --" << std::endl;
-      for(TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
-        for(TagLib::StringList::ConstIterator j = i->second.begin(); j != i->second.end(); ++j) {
-          std::cout << left << std::setw(longest) << i->first << " - " << '"' << *j << '"' << std::endl;
-        }
-      }
-
-    }
-
-    if(!f.isNull() && f.audioProperties()) {
-
-      TagLib::AudioProperties *properties = f.audioProperties();
-
-      int seconds = properties->length() % 60;
-      //int minutes = (properties->length() - seconds) / 60;
-
-      std::cout << "-- AUDIO --" << std::endl;
-      std::cout << "bitrate     - " << properties->bitrate() << std::endl;
-      std::cout << "sample rate - " << properties->sampleRate() << std::endl;
-      std::cout << "channels    - " << properties->channels() << std::endl;
-      //std::cout << "length      - " << minutes << ":" << setfill('0') << setw(2) << seconds << std::endl;
-    }
-  }
-  return 0;
-}
-//end
-*/
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -86,12 +28,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     _globals->playlistTree = ui->PlaylistTreeWidget;//new QTreeWidget;
     _globals->playlistTree->setHeaderHidden(true);
 
-    //ui->PlaylistListLayout->addWidget(_globals->playlistTree);
-
     plf = new playlist_form;
     ipn = new info_pannel;
     ui->PlaylistformLayout->addWidget(plf);
     ui->InfoPannelLayout->addWidget(ipn);
+
+
+//Context menu for add items button
+    QMenu * AddItemsMenu = new QMenu(ui->AddItemsButton);
+    QAction * act0 = new QAction("Files",ui->AddItemsButton);
+    QAction * act1 = new QAction("Folder",ui->AddItemsButton);
+    AddItemsMenu->addAction(act0);
+    AddItemsMenu->addAction(act1);
+    connect(act0,SIGNAL(triggered()),this,SLOT(AddItemsMenuFilesSlot()));
+    connect(act1,SIGNAL(triggered()),this,SLOT(AddItemsMenuFolderSlot()));
+
+    ui->AddItemsButton->setMenu(AddItemsMenu);
 }
 
 MainWindow::~MainWindow()
@@ -129,11 +81,6 @@ void MainWindow::openFile()
     if (!filePath.isEmpty()){
         playFile(filePath);
     }
-}
-
-void MainWindow::on_playFile_clicked()
-{
-    openFile();
 }
 
 void MainWindow::open_sqlite_db()
@@ -199,16 +146,7 @@ void MainWindow::ListDirRecursive(QString directory)
     }
 }
 
-void MainWindow::on_pushButton_4_clicked()
-{
 
-    //const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-    const QString dirPath = QFileDialog::getExistingDirectory();
-    if(!dirPath.isEmpty()){
-    ListDirRecursive(dirPath);
-    _globals->fillPlaylist(); //For refreshing playlist
-    }
-}
 void MainWindow::on_PlayButton_clicked()
 {
 
@@ -241,4 +179,18 @@ void MainWindow::on_Pause_clicked()
 void MainWindow::on_Stop_clicked()
 {
     mediaPlayer.stop();
+}
+
+void MainWindow::AddItemsMenuFilesSlot(){
+    qDebug() << "test";
+}
+
+
+void MainWindow::AddItemsMenuFolderSlot(){
+    //const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
+    const QString dirPath = QFileDialog::getExistingDirectory();
+    if(!dirPath.isEmpty()){
+    ListDirRecursive(dirPath);
+    _globals->fillPlaylist(); //For refreshing playlist
+    }
 }

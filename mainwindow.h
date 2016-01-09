@@ -24,15 +24,18 @@ public:
     void openFile();
     void playFile(QString fname);
 private slots:
-    void on_playFile_clicked();
-
-    void on_pushButton_4_clicked();
 
     void on_PlayButton_clicked();
 
     void on_Pause_clicked();
 
     void on_Stop_clicked();
+
+    //My custom slots
+    //void ShowContextMenu(const QPoint& pos);
+    void AddItemsMenuFilesSlot();
+    void AddItemsMenuFolderSlot();
+    //
 
 private:
     Ui::MainWindow *ui;
