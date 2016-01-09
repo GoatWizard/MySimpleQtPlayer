@@ -35,7 +35,16 @@ private slots:
     //void ShowContextMenu(const QPoint& pos);
     void AddItemsMenuFilesSlot();
     void AddItemsMenuFolderSlot();
+
+    //Playback progres slider
+    void seek(int seconds);
+    void durationChanged(qint64 duration);
+    void positionChanged(qint64 progress);
+
+
     //
+
+    void on_VolumeSlider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

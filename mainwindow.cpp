@@ -33,7 +33,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->PlaylistformLayout->addWidget(plf);
     ui->InfoPannelLayout->addWidget(ipn);
 
-
+//Slider
+    connect(ui->PlaybackProgressSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
+    connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), SLOT(durationChanged(qint64)));
+    connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), SLOT(positionChanged(qint64)));
 //Context menu for add items button
     QMenu * AddItemsMenu = new QMenu(ui->AddItemsButton);
     QAction * act0 = new QAction("Files",ui->AddItemsButton);
@@ -194,3 +197,30 @@ void MainWindow::AddItemsMenuFolderSlot(){
     _globals->fillPlaylist(); //For refreshing playlist
     }
 }
+
+void MainWindow::on_VolumeSlider_valueChanged(int value)
+{
+    mediaPlayer.setVolume(value);
+}
+
+
+//Progress playback slider
+void MainWindow::durationChanged(qint64 duration)
+{
+    //this->duration = duration/1000;
+    ui->PlaybackProgressSlider->setMaximum(duration / 1000);
+}
+
+void MainWindow::positionChanged(qint64 progress)
+{
+    if (!ui->PlaybackProgressSlider->isSliderDown()) {
+        ui->PlaybackProgressSlider->setValue(progress / 1000);
+    }
+    //updateDurationInfo(progress / 1000);
+}
+void MainWindow::seek(int seconds)
+{
+    mediaPlayer.setPosition(seconds * 1000);
+}
+
+//
