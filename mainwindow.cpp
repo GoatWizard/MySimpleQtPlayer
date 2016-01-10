@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     open_sqlite_db();
     _globals = new globals; // Create an object that stores global variables and functions
 
-    _globals->playlistTree = ui->PlaylistTreeWidget;//new QTreeWidget;
-    _globals->playlistTree->setHeaderHidden(true);
+    _globals->playlistTree = ui->PlaylistTreeWidget;
+    //_globals->playlistTree->setHeaderHidden(true);
 
     plf = new playlist_form;
     ipn = new info_pannel;
@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->PlaybackProgressSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), SLOT(durationChanged(qint64)));
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), SLOT(positionChanged(qint64)));
+//Other mediaplayer signals
+    connect(&mediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
 //Context menu for add items button
     QMenu * AddItemsMenu = new QMenu(ui->AddItemsButton);
     QAction * act0 = new QAction("Files",ui->AddItemsButton);
@@ -149,15 +151,10 @@ void MainWindow::ListDirRecursive(QString directory)
     }
 }
 
-
-void MainWindow::on_PlayButton_clicked()
+void MainWindow::PlayTrack()
 {
-
-    MyPlayerTreeWidgetItem * selecteditem = (MyPlayerTreeWidgetItem *)_globals->playlistTree->selectedItems().back();
-    qDebug() << selecteditem->IdNum;
-
     QSqlQuery query;
-    QString qvalue = "SELECT Path FROM "+QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex()+" WHERE Id = " + QString::number(selecteditem->IdNum) +";";
+    QString qvalue = "SELECT Path FROM "+QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex()+" WHERE Id = " + QString::number(_globals->current_played_track) +";";
     query.prepare(qvalue);
     //query.bindValue(":valCsp", QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex());
     query.exec();
@@ -165,6 +162,15 @@ void MainWindow::on_PlayButton_clicked()
         QString filepath = query.value(0).toString();
         playFile(filepath);
     }
+}
+
+void MainWindow::on_PlayButton_clicked()
+{
+
+    MyPlayerTreeWidgetItem * selecteditem = (MyPlayerTreeWidgetItem *)_globals->playlistTree->selectedItems().back();
+    _globals->current_played_track = selecteditem->IdNum;
+    _globals->current_active_pls = _globals->current_selected_pls;
+    PlayTrack();
 }
 
 void MainWindow::on_Pause_clicked()
@@ -218,9 +224,38 @@ void MainWindow::positionChanged(qint64 progress)
     }
     //updateDurationInfo(progress / 1000);
 }
+
+void  MainWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+    if(status == QMediaPlayer::EndOfMedia){
+    seekTrack(1);
+    }
+}
+
+void MainWindow::seekTrack(qint16 offset)
+{
+    _globals->current_played_track+=offset;
+    _globals->playlistTree->selectedItems().back()->setSelected(false);
+    _globals->TreeItems[_globals->current_played_track-1]->setSelected(true);
+    PlayTrack();
+}
+
 void MainWindow::seek(int seconds)
 {
     mediaPlayer.setPosition(seconds * 1000);
 }
 
-//
+void MainWindow::on_MuteButton_clicked()
+{
+        mediaPlayer.setMuted(ui->MuteButton->isChecked());
+}
+
+void MainWindow::on_NextTrackButton_clicked()
+{
+    seekTrack(1);
+}
+
+void MainWindow::on_PrevTrackButton_clicked()
+{
+     seekTrack(-1);
+}

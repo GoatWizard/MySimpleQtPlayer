@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Qt Simple Music Player</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -28,6 +28,9 @@
         <horstretch>16</horstretch>
         <verstretch>16</verstretch>
        </sizepolicy>
+      </property>
+      <property name="headerHidden">
+       <bool>true</bool>
       </property>
       <column>
        <property name="text">
@@ -105,6 +108,13 @@
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
+       <widget class="QPushButton" name="PrevTrackButton">
+        <property name="text">
+         <string>Prev</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="PlayButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -144,6 +154,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="NextTrackButton">
+        <property name="text">
+         <string>Next</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QSlider" name="VolumeSlider">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -160,7 +177,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="MuteButton">
+       <widget class="QCheckBox" name="MuteButton">
         <property name="text">
          <string>Mute</string>
         </property>

@@ -41,10 +41,17 @@ private slots:
     void durationChanged(qint64 duration);
     void positionChanged(qint64 progress);
 
+    void  mediaStatusChanged(QMediaPlayer::MediaStatus status);
 
     //
 
     void on_VolumeSlider_valueChanged(int value);
+
+    void on_MuteButton_clicked();
+
+    void on_NextTrackButton_clicked();
+
+    void on_PrevTrackButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -52,7 +59,8 @@ private:
     bool bIsPaused = true;
     void open_sqlite_db();
     void ListDirRecursive(QString directory);
-
+    void PlayTrack();
+    void seekTrack(qint16 offset);
     ///Forms
     playlist_form * plf;
     info_pannel * ipn;
