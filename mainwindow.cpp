@@ -88,8 +88,7 @@ void MainWindow::playFile(QString fname)
         ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
 
     }
-    //qDebug() << mediaPlayer.metaData("QMediaMetaData::Title").toString() << "adsd";
-    //read_tags(1,fname.toStdString().c_str());
+
     ipn->DisplayMediaInfo(fname);
     ///END
     bIsPaused = false;

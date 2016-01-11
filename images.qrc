@@ -31,5 +31,13 @@
         <file>res/lighttheme/MediaInfoWidget/tools-rip-audio-cd.svg</file>
         <file>res/lighttheme/MediaInfoWidget/document-edit.svg</file>
         <file>res/lighttheme/MediaInfoWidget/favorite-genres-amarok.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/office-chart-area-stacked.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/office-chart-bar.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/gtk-index.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/player-volume.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/appointment-new.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/document-new.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/dialog-scripts.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/zoom-fit-best.svg</file>
     </qresource>
 </RCC>

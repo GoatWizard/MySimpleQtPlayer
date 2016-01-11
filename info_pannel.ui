@@ -121,6 +121,15 @@
      </property>
      <item>
       <property name="text">
+       <string>Title</string>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/new-audio-alarm.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/new-audio-alarm.svg</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Artist</string>
       </property>
       <property name="icon">
@@ -161,7 +170,7 @@
       </property>
       <property name="icon">
        <iconset resource="images.qrc">
-        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/new-audio-alarm.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/new-audio-alarm.svg</iconset>
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/gtk-index.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/gtk-index.svg</iconset>
       </property>
      </item>
      <item>
@@ -182,15 +191,36 @@
       <property name="text">
        <string>Bitrate</string>
       </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/office-chart-area-stacked.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/office-chart-area-stacked.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Sample rate</string>
       </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/office-chart-bar.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/office-chart-bar.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Channels</string>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/player-volume.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/player-volume.svg</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Length</string>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/appointment-new.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/appointment-new.svg</iconset>
       </property>
      </item>
      <item>
@@ -202,15 +232,27 @@
       <property name="text">
        <string>Size</string>
       </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/zoom-fit-best.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/zoom-fit-best.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Path</string>
       </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/dialog-scripts.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/dialog-scripts.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>File name</string>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/document-new.svg</normaloff>:/Lighttheme/res/lighttheme/MediaInfoWidget/document-new.svg</iconset>
       </property>
      </item>
     </widget>
