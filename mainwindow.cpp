@@ -9,7 +9,7 @@
 #include <QList>
 
 #include "globals.h"
-#include "myplayertreewidgetitem.h"
+//#include <QTreeWidgetItem>
 
 //TAGLIB
 #include <fileref.h>
@@ -22,6 +22,18 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ///Setup stylesheet
+    //qApp->setStyleSheet("qrc:/styles/res/stylesheets/default.qss");
+    //setStyleSheet(":/styles/res/stylesheets/default.qss");
+    QFile styleSheet(":/styles/res/stylesheets/default.qss");
+
+    if (!styleSheet.open(QIODevice::ReadOnly)) {
+        qWarning("Unable to open :/files/blue.qss");
+        return;
+    }
+
+    qApp->setStyleSheet(styleSheet.readAll());
+
     open_sqlite_db();
     _globals = new globals; // Create an object that stores global variables and functions
 
@@ -43,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QMenu * AddItemsMenu = new QMenu(ui->AddItemsButton);
     QAction * act0 = new QAction("Files",ui->AddItemsButton);
     QAction * act1 = new QAction("Folder",ui->AddItemsButton);
+    //QIcon * icn = new QIcon(":/res/actions/add.png");
+    act0->setIcon(QIcon(":/res/actions/add.png"));
     AddItemsMenu->addAction(act0);
     AddItemsMenu->addAction(act1);
     connect(act0,SIGNAL(triggered()),this,SLOT(AddItemsMenuFilesSlot()));
@@ -60,8 +74,9 @@ void MainWindow::playFile(QString fname)
 {
     mediaPlayer.setMedia(QUrl::fromLocalFile(fname));
     mediaPlayer.play();
+
+    ///Info pannel functionality
     QFileInfo pfile(fname);
-    //qDebug() << pfile.dir().absolutePath();
     QStringList filters;
     filters << "*.png" << "*.jpg" << "*.jpe";
 
@@ -75,6 +90,8 @@ void MainWindow::playFile(QString fname)
     }
     //qDebug() << mediaPlayer.metaData("QMediaMetaData::Title").toString() << "adsd";
     //read_tags(1,fname.toStdString().c_str());
+    ipn->DisplayMediaInfo(fname);
+    ///END
     bIsPaused = false;
 }
 
@@ -154,7 +171,7 @@ void MainWindow::ListDirRecursive(QString directory)
 void MainWindow::PlayTrack()
 {
     QSqlQuery query;
-    QString qvalue = "SELECT Path FROM "+QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex()+" WHERE Id = " + QString::number(_globals->current_played_track) +";";
+    QString qvalue = "SELECT Path FROM "+QString("TBL") +_globals->current_active_pls.toLocal8Bit().toHex()+" WHERE Id = " + QString::number(_globals->current_played_track) +";";
     query.prepare(qvalue);
     //query.bindValue(":valCsp", QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex());
     query.exec();
@@ -235,8 +252,10 @@ void  MainWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status)
 void MainWindow::seekTrack(qint16 offset)
 {
     _globals->current_played_track+=offset;
+    if(_globals->current_active_pls == _globals->current_selected_pls){
     _globals->playlistTree->selectedItems().back()->setSelected(false);
     _globals->TreeItems[_globals->current_played_track-1]->setSelected(true);
+    }
     PlayTrack();
 }
 
@@ -258,4 +277,12 @@ void MainWindow::on_NextTrackButton_clicked()
 void MainWindow::on_PrevTrackButton_clicked()
 {
      seekTrack(-1);
+}
+
+void MainWindow::on_PlaylistTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    _globals->current_played_track = ((MyPlayerTreeWidgetItem *)item)->IdNum;
+    _globals->current_active_pls = _globals->current_selected_pls;
+    //qDebug() << "Column is : " << column;
+    PlayTrack();
 }

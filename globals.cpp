@@ -21,7 +21,8 @@ void globals::fillPlaylist()
     albquery.exec();
     //qDebug() << albquery.lastError() << _globals->current_selected_pls.toLocal8Bit().toHex();
     while (albquery.next()) { ///Sort by album
-        MyPlayerTreeWidgetItem * albumitem =new MyPlayerTreeWidgetItem(_globals->playlistTree);;
+        //MyPlayerTreeWidgetItem * albumitem =new MyPlayerTreeWidgetItem(_globals->playlistTree);
+        QTreeWidgetItem * albumitem =new QTreeWidgetItem(_globals->playlistTree);
         albumitem->setText(0,albquery.value(0).toString());
         albumitem->setExpanded(true);
 
@@ -37,6 +38,7 @@ void globals::fillPlaylist()
         //qDebug() << query.value(1).toString();
         MyPlayerTreeWidgetItem * songitem = new MyPlayerTreeWidgetItem(albumitem);
         songitem->setText(0,query.value(1).toString());
+        //songitem->setText(1,"\nMP3 :: 44kHz, 320 kbps, 8,26MB");
         songitem->IdNum = query.value(0).toUInt();
         TreeItems.push_back(songitem);
         }

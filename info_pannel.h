@@ -2,7 +2,7 @@
 #define INFO_PANNEL_H
 
 #include <QWidget>
-#include <QLabel>
+//#include <QLabel>
 
 namespace Ui {
 class info_pannel;
@@ -17,10 +17,11 @@ public:
     ~info_pannel();
 
     void DisplayCoverArt(QString path);
+    void DisplayMediaInfo(QString path);
 
 private:
     Ui::info_pannel *ui;
-    QLabel * imageLabel;
+    //QLabel * imageLabel;
 };
 
 #endif // INFO_PANNEL_H

@@ -1,0 +1,33 @@
+QWidget
+{
+        background-color: black;
+        color: red;
+}
+
+QListWidget
+{
+    color: yellow;
+}
+
+QCheckBox#MuteButton
+{
+    color: green;
+}
+
+QCheckBox#MuteButton::indicator:checked {
+    image: url(:/Darktheme/res/darktheme/audio-off.svg);
+}
+
+QCheckBox#MuteButton::indicator:unchecked {
+    image: url(:/Darktheme/res/darktheme/audio-on.svg);
+}
+
+QTreeWidgetItem
+{
+    color: yellow;
+}
+
+MyPlayerTreeWidgetItem
+{
+    color: green;
+}

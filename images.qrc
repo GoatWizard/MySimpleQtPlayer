@@ -2,4 +2,34 @@
     <qresource prefix="/new/def">
         <file>res/qsmp_logo.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>res/actions/add.png</file>
+        <file>res/volume/player-volume.svg</file>
+        <file>res/volume/player-volume-muted.svg</file>
+        <file>res/service/edit-find.svg</file>
+        <file>res/playback/media-playback-pause.svg</file>
+        <file>res/playback/media-playback-start.svg</file>
+        <file>res/playback/media-playback-stop.svg</file>
+        <file>res/playback/media-seek-backward.svg</file>
+        <file>res/playback/media-seek-forward.svg</file>
+        <file>res/actions/filename-dash-amarok.svg</file>
+        <file>res/actions/list-add.svg</file>
+    </qresource>
+    <qresource prefix="/styles">
+        <file>res/stylesheets/default.qss</file>
+    </qresource>
+    <qresource prefix="/Darktheme">
+        <file>res/darktheme/audio-off.svg</file>
+        <file>res/darktheme/audio-on.svg</file>
+    </qresource>
+    <qresource prefix="/Lighttheme">
+        <file>res/lighttheme/AddItemsButton/archive-insert.svg</file>
+        <file>res/lighttheme/AddItemsButton/archive-insert-directory.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/im-user.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/new-audio-alarm.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/resource-calendar-child.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/tools-rip-audio-cd.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/document-edit.svg</file>
+        <file>res/lighttheme/MediaInfoWidget/favorite-genres-amarok.svg</file>
+    </qresource>
 </RCC>

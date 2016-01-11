@@ -8,6 +8,7 @@
 
 #include "playlist_form.h"
 #include "info_pannel.h"
+#include "myplayertreewidgetitem.h"
 
 
 namespace Ui {
@@ -52,6 +53,8 @@ private slots:
     void on_NextTrackButton_clicked();
 
     void on_PrevTrackButton_clicked();
+
+    void on_PlaylistTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::MainWindow *ui;
