@@ -75,20 +75,21 @@ void MainWindow::playFile(QString fname)
     mediaPlayer.setMedia(QUrl::fromLocalFile(fname));
     mediaPlayer.play();
 
-    ///Info pannel functionality
-    QFileInfo pfile(fname);
-    QStringList filters;
-    filters << "*.png" << "*.jpg" << "*.jpe";
+//    ///Info pannel functionality
+//    QFileInfo pfile(fname);
+//    QStringList filters;
+//    filters << "*.png" << "*.jpg" << "*.jpe";
 
-    QDirIterator iterator (pfile.dir().absolutePath(), filters, QDir::Files , QDirIterator::Subdirectories);
+//    QDirIterator iterator (pfile.dir().absolutePath(), filters, QDir::Files , QDirIterator::Subdirectories);
 
-    while(iterator.hasNext()){
-        iterator.next();
-        qDebug() << iterator.fileInfo().absoluteFilePath();
-        ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
+//    while(iterator.hasNext()){
+//        iterator.next();
+//        qDebug() << iterator.fileInfo().absoluteFilePath();
+//        //ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
 
-    }
+//    }
 
+    ipn->DisplayCoverArt(fname);
     ipn->DisplayMediaInfo(fname);
     ///END
     bIsPaused = false;

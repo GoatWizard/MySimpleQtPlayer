@@ -20,13 +20,15 @@ SOURCES += main.cpp\
     playlist_form.cpp \
     globals.cpp \
     info_pannel.cpp \
-    myplayertreewidgetitem.cpp
+    myplayertreewidgetitem.cpp \
+    tworker.cpp
 
 HEADERS  += mainwindow.h \
     playlist_form.h \
     globals.h \
     info_pannel.h \
-    myplayertreewidgetitem.h
+    myplayertreewidgetitem.h \
+    tworker.h
 
 FORMS    += mainwindow.ui \
     playlist_form.ui \

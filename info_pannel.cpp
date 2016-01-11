@@ -2,6 +2,7 @@
 #include "ui_info_pannel.h"
 
 #include <QDir>
+#include <QDirIterator>
 #include <QDebug>
 
 //TAGLIB
@@ -12,6 +13,7 @@
 #include <iomanip>
 #include <stdio.h>
 
+
 info_pannel::info_pannel(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::info_pannel)
@@ -19,9 +21,15 @@ info_pannel::info_pannel(QWidget *parent) :
 
     ui->setupUi(this);
 
-    //imageLabel = new QLabel();
-    //imageLabel->setMinimumSize(QSize(256,256));
-    //imageLabel->setMaximumSize(QSize(256,256));
+
+    thread = new QThread();
+    worker = new TWorker();
+    worker->moveToThread(thread);
+      //connect(worker, SIGNAL(valueChanged(QString)), ui->label, SLOT(setText(QString)));
+      connect(worker, SIGNAL(workRequested()), thread, SLOT(start()));
+      connect(thread, SIGNAL(started()), worker, SLOT(doWork()));
+      connect(worker, SIGNAL(finished()), thread, SLOT(quit()), Qt::DirectConnection);
+
     ui->imageLabel->setScaledContents(true);
     ui->imageLabel->setPixmap(QString(":/new/def/res/qsmp_logo.png"));
     qDebug() << QDir::currentPath();
@@ -32,15 +40,44 @@ info_pannel::info_pannel(QWidget *parent) :
 
 info_pannel::~info_pannel()
 {
+    worker->abort();
+    thread->wait();
+    delete thread;
+    delete worker;
+
     delete ui;
 }
 
 void info_pannel::DisplayCoverArt(QString path)
 {
-    QPixmap image(path);
+
+    worker->abort();
+    thread->wait(); // If the thread is not running, this will immediately return.
+
+    worker->imageLabel = ui->imageLabel;///!!!!
+
+    ///Info pannel functionality
+    QFileInfo pfile(path);
+    QStringList filters;
+    filters << "*.png" << "*.jpg" << "*.jpe";
+
+    QDirIterator iterator (pfile.dir().absolutePath(), filters, QDir::Files , QDirIterator::Subdirectories);
+
+    while(iterator.hasNext()){
+        iterator.next();
+        qDebug() << iterator.fileInfo().absoluteFilePath();
+        //ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
+        QPixmap * image = new QPixmap(iterator.fileInfo().absoluteFilePath());
+        worker->CoverArtList.push_back(image);
+    }
+
+
+    worker->requestWork();
+
 
     //QLabel * imageLabel = new QLabel();
-    ui->imageLabel->setPixmap(image);
+
+    ///ui->imageLabel->setPixmap(*image);
 
     //mainLayout.addWidget(imageLabel);
 }

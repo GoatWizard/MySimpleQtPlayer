@@ -2,7 +2,11 @@
 #define INFO_PANNEL_H
 
 #include <QWidget>
-//#include <QLabel>
+#include <QPixmap>
+
+//Cover Art changing thread
+#include "tworker.h"
+#include <QThread>
 
 namespace Ui {
 class info_pannel;
@@ -21,7 +25,9 @@ public:
 
 private:
     Ui::info_pannel *ui;
-    //QLabel * imageLabel;
+
+    TWorker * worker;
+    QThread * thread;
 };
 
 #endif // INFO_PANNEL_H
