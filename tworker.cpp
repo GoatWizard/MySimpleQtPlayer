@@ -27,7 +27,7 @@ void TWorker::doWork()
 //qDebug()<< "worker is working\n";
 
         QEventLoop loop;
-        QTimer::singleShot(1000, &loop, SLOT(quit()));
+        QTimer::singleShot(4096, &loop, SLOT(quit()));
         loop.exec();
 
         if(!CoverArtList.isEmpty()){

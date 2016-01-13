@@ -64,6 +64,7 @@ private:
     void ListDirRecursive(QString directory);
     void PlayTrack();
     void seekTrack(qint16 offset);
+    QString currentTrackUrl;
     ///Forms
     playlist_form * plf;
     info_pannel * ipn;

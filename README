@@ -1,3 +1,6 @@
 Using:
 TagLib https://taglib.github.io/
 Breeze icon theme from KDE
+
+Player work on QMediaPlayer class.
+On Windows some music files can not be played, if this occurs - please install K-Lite Codec Pack.

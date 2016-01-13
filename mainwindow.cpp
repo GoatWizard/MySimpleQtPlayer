@@ -72,26 +72,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::playFile(QString fname)
 {
+    //mediaPlayer.
     mediaPlayer.setMedia(QUrl::fromLocalFile(fname));
     mediaPlayer.play();
-
-//    ///Info pannel functionality
-//    QFileInfo pfile(fname);
-//    QStringList filters;
-//    filters << "*.png" << "*.jpg" << "*.jpe";
-
-//    QDirIterator iterator (pfile.dir().absolutePath(), filters, QDir::Files , QDirIterator::Subdirectories);
-
-//    while(iterator.hasNext()){
-//        iterator.next();
-//        qDebug() << iterator.fileInfo().absoluteFilePath();
-//        //ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
-
-//    }
-
-    ipn->DisplayCoverArt(fname);
-    ipn->DisplayMediaInfo(fname);
-    ///END
+    currentTrackUrl = fname;
     bIsPaused = false;
 }
 
@@ -112,11 +96,7 @@ void MainWindow::open_sqlite_db()
     qDebug() << QDir::homePath();
     if (!db.open()) {
         QMessageBox::critical(0, qApp->tr("Cannot open database"),
-            qApp->tr("Unable to establish a database connection.\n"
-                     "This example needs SQLite support. Please read "
-                     "the Qt SQL driver documentation for information how "
-                     "to build it.\n\n"
-                     "Click Cancel to exit."), QMessageBox::Cancel);
+            qApp->tr("Unable to establish a database connection.\n"), QMessageBox::Cancel);
     }
 }
 
@@ -246,6 +226,11 @@ void  MainWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
     if(status == QMediaPlayer::EndOfMedia){
     seekTrack(1);
+    }
+    else if(status == QMediaPlayer::BufferedMedia){ //Dispay cover art and tags info only after media file completely loaded to avoid errors on Windows
+        QFileInfo pfile(currentTrackUrl);
+        ipn->DisplayCoverArt(pfile.dir().absolutePath());
+        ipn->DisplayMediaInfo(currentTrackUrl);
     }
 }
 

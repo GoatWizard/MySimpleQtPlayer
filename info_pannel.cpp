@@ -32,7 +32,7 @@ info_pannel::info_pannel(QWidget *parent) :
 
     ui->imageLabel->setScaledContents(true);
     ui->imageLabel->setPixmap(QString(":/new/def/res/qsmp_logo.png"));
-    qDebug() << QDir::currentPath();
+    //qDebug() << QDir::currentPath();
     //ui->verticalLayout->addWidget(imageLabel);
 
     //ui->CoverArtFrame(imageLabel);
@@ -50,22 +50,21 @@ info_pannel::~info_pannel()
 
 void info_pannel::DisplayCoverArt(QString path)
 {
+    if(path != PreviousCoverArt){ // if music file directory is same, that previous: do not proceed change cover art
 
     worker->abort();
     thread->wait(); // If the thread is not running, this will immediately return.
 
     worker->imageLabel = ui->imageLabel;///!!!!
 
-    ///Info pannel functionality
-    QFileInfo pfile(path);
     QStringList filters;
-    filters << "*.png" << "*.jpg" << "*.jpe";
+    filters << "*.png" << "*.jpg" << "*.jpe" << "*.JPEG";
 
-    QDirIterator iterator (pfile.dir().absolutePath(), filters, QDir::Files , QDirIterator::Subdirectories);
+    QDirIterator iterator (path, filters, QDir::Files , QDirIterator::Subdirectories);
 
     while(iterator.hasNext()){
         iterator.next();
-        qDebug() << iterator.fileInfo().absoluteFilePath();
+        qDebug() << "Cover art changing: " << PreviousCoverArt <<  iterator.fileInfo().absoluteFilePath();
         //ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
         QPixmap * image = new QPixmap(iterator.fileInfo().absoluteFilePath());
         worker->CoverArtList.push_back(image);
@@ -75,13 +74,12 @@ void info_pannel::DisplayCoverArt(QString path)
     worker->requestWork();
 
 
-    //QLabel * imageLabel = new QLabel();
-
     ///ui->imageLabel->setPixmap(*image);
+    PreviousCoverArt = path;
 
-    //mainLayout.addWidget(imageLabel);
+    }
+
 }
-
 void info_pannel::DisplayMediaInfo(QString path)
 {
 #ifdef _WIN32

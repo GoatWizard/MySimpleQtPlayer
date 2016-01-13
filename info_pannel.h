@@ -28,6 +28,8 @@ private:
 
     TWorker * worker;
     QThread * thread;
+
+    QString PreviousCoverArt; //This need to prevent cover art changing when next track folder is same
 };
 
 #endif // INFO_PANNEL_H
