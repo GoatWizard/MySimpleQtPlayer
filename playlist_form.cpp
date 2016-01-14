@@ -21,11 +21,6 @@ playlist_form::~playlist_form()
     delete ui;
 }
 
-void playlist_form::on_PlaylistWidget_clicked(const QModelIndex &index)
-{
-    
-}
-
 void playlist_form::read_db()
 {
     QSqlQuery query;

@@ -32,10 +32,6 @@ info_pannel::info_pannel(QWidget *parent) :
 
     ui->imageLabel->setScaledContents(true);
     ui->imageLabel->setPixmap(QString(":/new/def/res/qsmp_logo.png"));
-    //qDebug() << QDir::currentPath();
-    //ui->verticalLayout->addWidget(imageLabel);
-
-    //ui->CoverArtFrame(imageLabel);
 }
 
 info_pannel::~info_pannel()
@@ -111,8 +107,8 @@ if(!f.isNull() && f.audioProperties()) {
     int minutes = (properties->length() - seconds) / 60;
     ui->MediaInfoWidget->item(11)->setText("Length: " + QString::number(minutes) + ":" + QString::number(seconds));
 }
-QFileInfo pfile(path);
-ui->MediaInfoWidget->item(13)->setText(QString::number(pfile.size()/1024) + " KiB");
-ui->MediaInfoWidget->item(14)->setText(pfile.dir().absolutePath());
-ui->MediaInfoWidget->item(15)->setText(pfile.fileName());
+    QFileInfo pfile(path);
+    ui->MediaInfoWidget->item(13)->setText(QString::number(pfile.size()/1024) + " KiB");
+    ui->MediaInfoWidget->item(14)->setText(pfile.dir().absolutePath());
+    ui->MediaInfoWidget->item(15)->setText(pfile.fileName());
 }

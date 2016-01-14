@@ -13,44 +13,29 @@ TWorker::~TWorker()
 
 void TWorker::doWork()
 {
-    for (int i = 0; i < 60; i ++) {
 
-        mutex.lock();
-        bool abort = _abort;
-        mutex.unlock();
-
-        if (abort) {
-            break;
-        }
-
-
-//qDebug()<< "worker is working\n";
-
-        QEventLoop loop;
-        QTimer::singleShot(4096, &loop, SLOT(quit()));
-        loop.exec();
-
-        if(!CoverArtList.isEmpty()){
+    if(!CoverArtList.isEmpty()){
         if(imagecounter<CoverArtList.size()){
         imageLabel->setPixmap(*CoverArtList[imagecounter]);
-            //qDebug()<< "Setting pixmap: " << imagecounter;
         imagecounter++;
         }
         else{
             imagecounter=1;
             imageLabel->setPixmap(*CoverArtList[0]);
         }
-        }
+    }
 
 
-        emit valueChanged(QString::number(i));
- }
+    QEventLoop loop;
+    QTimer::singleShot(4096, &loop, SLOT(quit()));
+    loop.exec();
 
-mutex.lock();
-_working = false;
-mutex.unlock();
 
- emit finished();
+    mutex.lock();
+    _working = false;
+    mutex.unlock();
+
+    emit finished();
 }
 
 void TWorker::requestWork()

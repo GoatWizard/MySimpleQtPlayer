@@ -187,12 +187,14 @@ void MainWindow::on_Stop_clicked()
     mediaPlayer.stop();
 }
 
-void MainWindow::AddItemsMenuFilesSlot(){
+void MainWindow::AddItemsMenuFilesSlot()
+{
     qDebug() << "test";
 }
 
 
-void MainWindow::AddItemsMenuFolderSlot(){
+void MainWindow::AddItemsMenuFolderSlot()
+{
     //const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
     const QString dirPath = QFileDialog::getExistingDirectory();
     if(!dirPath.isEmpty()){
@@ -251,7 +253,7 @@ void MainWindow::seek(int seconds)
 
 void MainWindow::on_MuteButton_clicked()
 {
-        mediaPlayer.setMuted(ui->MuteButton->isChecked());
+    mediaPlayer.setMuted(ui->MuteButton->isChecked());
 }
 
 void MainWindow::on_NextTrackButton_clicked()

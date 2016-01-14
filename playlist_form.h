@@ -18,11 +18,8 @@ public:
 
     void read_db();
 
-    //QString current_selected_pls;
-
 private slots:
-    void on_PlaylistWidget_clicked(const QModelIndex &index);
-    
+
     void on_newPlaylist_clicked();
 
     void on_PlaylistWidget_itemClicked(QListWidgetItem *item);

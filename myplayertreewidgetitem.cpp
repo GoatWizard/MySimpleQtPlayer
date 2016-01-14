@@ -1,10 +1,5 @@
 #include "myplayertreewidgetitem.h"
 
-//MyPlayerTreeWidgetItem::MyPlayerTreeWidgetItem(QTreeWidget *parent)
-//{
-
-//}
-
 MyPlayerTreeWidgetItem::MyPlayerTreeWidgetItem(QTreeWidget *view, int type)  : QTreeWidgetItem(view,type)
 {
 
