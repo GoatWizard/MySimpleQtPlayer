@@ -13,23 +13,32 @@ TWorker::~TWorker()
 
 void TWorker::doWork()
 {
-
+while(!_abort){
     if(!CoverArtList.isEmpty()){
         if(imagecounter<CoverArtList.size()){
-        imageLabel->setPixmap(*CoverArtList[imagecounter]);
-        imagecounter++;
+            imageLabel->setPixmap(*CoverArtList[imagecounter]);
+            imagecounter++;
         }
         else{
             imagecounter=1;
             imageLabel->setPixmap(*CoverArtList[0]);
         }
+
+        if(CoverArtList.size() == 1) {
+            abort();
+        }
     }
+    else {
+        abort();
+    }
+
+    //qDebug() << "FIX THIS!!! :" << CoverArtList.size();
 
 
     QEventLoop loop;
     QTimer::singleShot(4096, &loop, SLOT(quit()));
     loop.exec();
-
+    }
 
     mutex.lock();
     _working = false;
@@ -52,7 +61,7 @@ void TWorker::abort()
 {
     if (_working) {
         _abort = true;
-
+        //qDebug() << "ABORT!!!";
         for(quint16 c = 0;c < CoverArtList.size();c++){
             delete CoverArtList[c];
         }

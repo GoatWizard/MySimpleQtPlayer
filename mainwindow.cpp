@@ -22,17 +22,17 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ///Setup stylesheet
-    //qApp->setStyleSheet("qrc:/styles/res/stylesheets/default.qss");
-    //setStyleSheet(":/styles/res/stylesheets/default.qss");
     QFile styleSheet(":/styles/res/stylesheets/default.qss");
 
     if (!styleSheet.open(QIODevice::ReadOnly)) {
-        qWarning("Unable to open :/files/blue.qss");
+        qWarning("Unable to open :/styles/res/stylesheets/default.qss");
         return;
     }
-
-    qApp->setStyleSheet(styleSheet.readAll());
+    else {
+        qApp->setStyleSheet(styleSheet.readAll());
+    }
 
     open_sqlite_db();
     _globals = new globals; // Create an object that stores global variables and functions
@@ -53,10 +53,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(&mediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
 //Context menu for add items button
     QMenu * AddItemsMenu = new QMenu(ui->AddItemsButton);
+    //ui->AddItemsButton->setStyleSheet("");
     QAction * act0 = new QAction("Files",ui->AddItemsButton);
     QAction * act1 = new QAction("Folder",ui->AddItemsButton);
     //QIcon * icn = new QIcon(":/res/actions/add.png");
-    act0->setIcon(QIcon(":/res/actions/add.png"));
+    //act0->setIcon(QIcon(":/res/actions/add.png"));
     AddItemsMenu->addAction(act0);
     AddItemsMenu->addAction(act1);
     connect(act0,SIGNAL(triggered()),this,SLOT(AddItemsMenuFilesSlot()));
@@ -186,10 +187,15 @@ void MainWindow::on_Stop_clicked()
 {
     mediaPlayer.stop();
 }
-
+////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void MainWindow::AddItemsMenuFilesSlot()
 {
-    qDebug() << "test";
+     //QFileDialog::getExistingDirectory(this,QString("Select File"),QString("D:"),0);
+    QStringList filePath = QFileDialog::getOpenFileNames();
+    for(QStringList::iterator it = filePath.begin();it != filePath.end();++it){
+        QString current = *it;
+        qDebug() << "File : " << current;
+    }
 }
 
 

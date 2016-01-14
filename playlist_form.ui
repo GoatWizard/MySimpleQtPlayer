@@ -38,6 +38,9 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -83,7 +86,7 @@
      <property name="minimumSize">
       <size>
        <width>192</width>
-       <height>0</height>
+       <height>24</height>
       </size>
      </property>
      <property name="maximumSize">

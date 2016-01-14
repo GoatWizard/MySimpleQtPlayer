@@ -1,3 +1,8 @@
+QPushButton::menu-indicator
+{
+image: "";
+}
+
 QWidget
 {
         background-color: black;
@@ -6,6 +11,7 @@ QWidget
 
 QListWidget
 {
+    border: 1px solid red;
     color: yellow;
 }
 
@@ -22,6 +28,11 @@ QCheckBox#MuteButton::indicator:unchecked {
     image: url(:/Darktheme/res/darktheme/audio-on.svg);
 }
 
+QTreeWidget
+{
+    border: 1px solid red;
+}
+
 QTreeWidgetItem
 {
     color: yellow;
@@ -30,4 +41,29 @@ QTreeWidgetItem
 MyPlayerTreeWidgetItem
 {
     color: green;
+}
+
+QLineEdit#lineEdit
+{
+    border: 1px solid red;
+}
+
+QListWidget#PlaylistWidget
+{
+    border: 1px solid red;
+}
+
+QLabel#imageLabel
+{
+    border: 1px solid red;
+}
+
+QPushButton
+{
+    border: 1px solid red;
+}
+
+QWidget#info_pannel
+{
+    border: 1px solid red;
 }
