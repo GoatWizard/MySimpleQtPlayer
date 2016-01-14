@@ -64,6 +64,8 @@ private:
     void ListDirRecursive(QString directory);
     void PlayTrack();
     void seekTrack(qint16 offset);
+    void InsertFileIntoPlaylist(QString filename,QSqlQuery & query);
+
     QString currentTrackUrl;
     ///Forms
     playlist_form * plf;

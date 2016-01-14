@@ -67,3 +67,8 @@ QWidget#info_pannel
 {
     border: 1px solid red;
 }
+
+QVideoWidget
+{
+    border: 1px solid red;
+}

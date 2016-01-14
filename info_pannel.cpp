@@ -20,7 +20,9 @@ info_pannel::info_pannel(QWidget *parent) :
 {
 
     ui->setupUi(this);
-
+    videoWidget = new QVideoWidget;
+    videoWidget->setHidden(true);
+    ui->verticalLayout->addWidget(videoWidget);
 
     thread = new QThread();
     worker = new TWorker();
@@ -111,4 +113,10 @@ if(!f.isNull() && f.audioProperties()) {
     ui->MediaInfoWidget->item(13)->setText(QString::number(pfile.size()/1024) + " KiB");
     ui->MediaInfoWidget->item(14)->setText(pfile.dir().absolutePath());
     ui->MediaInfoWidget->item(15)->setText(pfile.fileName());
+}
+
+void info_pannel::setIsVideo(bool bIsVideo){
+        ui->imageLabel->setHidden(bIsVideo);
+        ui->MediaInfoWidget->setHidden(bIsVideo);
+        videoWidget->setHidden(!bIsVideo);
 }

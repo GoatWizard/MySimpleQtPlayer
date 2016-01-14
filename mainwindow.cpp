@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //_globals->playlistTree->setHeaderHidden(true);
 
     plf = new playlist_form;
-    ipn = new info_pannel;
+    ipn = new info_pannel; mediaPlayer.setVideoOutput(ipn->videoWidget);
     ui->PlaylistformLayout->addWidget(plf);
     ui->InfoPannelLayout->addWidget(ipn);
 
@@ -105,7 +105,7 @@ void MainWindow::open_sqlite_db()
 void MainWindow::ListDirRecursive(QString directory)
 {
     QStringList filters;
-    filters << "*.mp3" << "*.ogg" << "*.flac"; ///CHECK
+    filters << "*.mp3" << "*.ogg" << "*.flac" << "*.mp4"; ///CHECK
 
     QDirIterator iterator (directory, filters, QDir::Files , QDirIterator::Subdirectories);//| QDir::NoSymLinks
 
@@ -119,35 +119,41 @@ void MainWindow::ListDirRecursive(QString directory)
 
     while(iterator.hasNext()){
         iterator.next();
-        #ifdef _WIN32
-            TagLib::FileRef f(iterator.fileInfo().absoluteFilePath().toStdWString().c_str());
-        #else
-            TagLib::FileRef f(iterator.fileInfo().absoluteFilePath().toStdString().c_str());
-        #endif
-        QString Album_var,Track_var;
-        if(!f.isNull() && f.tag()) {
-            TagLib::Tag *tag = f.tag();
-            Album_var = QString::fromStdWString(tag->album().toWString());
-            Track_var = QString::fromStdWString(tag->title().toWString());
-        }
-        else {
-            Album_var = "Unknown";
-        }
-        QString querystring = "insert into " + QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex() + " (Path, Album, Track) values (:valPath, :valAlbum, :valTrack);";
-        query.prepare(querystring);
-        query.bindValue(":valPath", iterator.fileInfo().absoluteFilePath());//.toLocal8Bit().toHex());
-        query.bindValue(":valAlbum", Album_var);
-        query.bindValue(":valTrack", Track_var);
-        query.exec();
-        //query.finish();
-        ///query.exec("insert into "+ _globals->current_selected_pls + " (Path, Album, Track) values (':valPath', ':valAlbum', ':valTrack');");
-
-
-        //query.exec("insert into "+ _globals->current_selected_pls +" (Path, Album, Track) values('" + ":valA" + "'', " + "'" + Album_var + "'," + "'" + Track_var + "')");
-
-        //qDebug() <<  query.lastError();
+        InsertFileIntoPlaylist(iterator.fileInfo().absoluteFilePath(),query);
     }
 }
+
+void MainWindow::InsertFileIntoPlaylist(QString filename, QSqlQuery &query){
+
+    #ifdef _WIN32
+        TagLib::FileRef f(filename.toStdWString().c_str());
+    #else
+        TagLib::FileRef f(filename.toStdString().c_str());
+    #endif
+
+    QString Album_var,Track_var;
+    if(!f.isNull() && f.tag()) {
+        TagLib::Tag *tag = f.tag();
+        Album_var = QString::fromStdWString(tag->album().toWString());
+        Track_var = QString::fromStdWString(tag->title().toWString());
+    }
+
+    if(Album_var.isEmpty()){
+        Album_var = QFileInfo(filename).dir().dirName();
+    }
+    if(Track_var.isEmpty()){
+        //QFileInfo pfile(filename);
+        //pfile.fileName();
+        Track_var = QFileInfo(filename).fileName();
+    }
+    QString querystring = "insert into " + QString("TBL") +_globals->current_selected_pls.toLocal8Bit().toHex() + " (Path, Album, Track) values (:valPath, :valAlbum, :valTrack);";
+    query.prepare(querystring);
+    query.bindValue(":valPath", filename);//.toLocal8Bit().toHex());
+    query.bindValue(":valAlbum", Album_var);
+    query.bindValue(":valTrack", Track_var);
+    query.exec();
+}
+
 
 void MainWindow::PlayTrack()
 {
@@ -187,17 +193,31 @@ void MainWindow::on_Stop_clicked()
 {
     mediaPlayer.stop();
 }
-////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 void MainWindow::AddItemsMenuFilesSlot()
 {
-     //QFileDialog::getExistingDirectory(this,QString("Select File"),QString("D:"),0);
     QStringList filePath = QFileDialog::getOpenFileNames();
-    for(QStringList::iterator it = filePath.begin();it != filePath.end();++it){
-        QString current = *it;
-        qDebug() << "File : " << current;
+
+    if(!filePath.isEmpty()){
+
+        QSqlQuery query;
+        query.exec("PRAGMA page_size = 4096");
+        query.exec("PRAGMA cache_size = 262 144");
+        query.exec("PRAGMA temp_store = MEMORY");
+        query.exec("PRAGMA journal_mode = OFF");
+        query.exec("PRAGMA locking_mode = EXCLUSIVE");
+        query.exec("PRAGMA synchronous = OFF");
+
+        for(QStringList::iterator it = filePath.begin();it != filePath.end();++it){
+            QString current = *it;
+            InsertFileIntoPlaylist(current,query);
+            //qDebug() << "File : " << current;
+        }
+
+        _globals->fillPlaylist(); //For refreshing playlist
+
     }
 }
-
 
 void MainWindow::AddItemsMenuFolderSlot()
 {
@@ -232,13 +252,27 @@ void MainWindow::positionChanged(qint64 progress)
 
 void  MainWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
+    if(status == QMediaPlayer::LoadedMedia){
+         qDebug() << "Media is loaded";
+
+    }
+
     if(status == QMediaPlayer::EndOfMedia){
     seekTrack(1);
     }
     else if(status == QMediaPlayer::BufferedMedia){ //Dispay cover art and tags info only after media file completely loaded to avoid errors on Windows
-        QFileInfo pfile(currentTrackUrl);
-        ipn->DisplayCoverArt(pfile.dir().absolutePath());
-        ipn->DisplayMediaInfo(currentTrackUrl);
+        if(mediaPlayer.isVideoAvailable()){
+            qDebug() << "This is video!!!";
+            //ipn->ui->MediaInfoWidget->setHidden(true);
+            ipn->setIsVideo(true);
+        }
+        else{
+            qDebug() << "This file is audio";
+            ipn->setIsVideo(false);
+            QFileInfo pfile(currentTrackUrl);
+            ipn->DisplayCoverArt(pfile.dir().absolutePath());
+            ipn->DisplayMediaInfo(currentTrackUrl);
+        }
     }
 }
 

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPixmap>
+#include <QVideoWidget>
 
 //Cover Art changing thread
 #include "tworker.h"
@@ -23,6 +24,8 @@ public:
     void DisplayCoverArt(QString path);
     void DisplayMediaInfo(QString path);
 
+    QVideoWidget * videoWidget;
+    void setIsVideo(bool bIsVideo);
 private:
     Ui::info_pannel *ui;
 
