@@ -28,19 +28,27 @@ QCheckBox#MuteButton::indicator:unchecked {
     image: url(:/Darktheme/res/darktheme/audio-on.svg);
 }
 
+QTreeWidget::item
+{
+    color: yellow;
+
+}
+
+QTreeWidget::item:has-children
+{
+    color: green;
+    background-color: #000000;
+        min-height: 80px;
+        border: 1px solid gray;
+        font: bold italic large "Times New Roman";
+}
+
 QTreeWidget
 {
     border: 1px solid red;
-}
+    background-color: #000000;
+    alternate-background-color: #2E2E2E;
 
-QTreeWidgetItem
-{
-    color: yellow;
-}
-
-MyPlayerTreeWidgetItem
-{
-    color: green;
 }
 
 QLineEdit#lineEdit
@@ -71,4 +79,5 @@ QWidget#info_pannel
 QVideoWidget
 {
     border: 1px solid red;
+    background-color: #000000;
 }

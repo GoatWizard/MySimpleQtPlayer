@@ -20,12 +20,19 @@ info_pannel::info_pannel(QWidget *parent) :
 {
 
     ui->setupUi(this);
-    videoWidget = new QVideoWidget;
+    videoWidget = new QVideoWidget(this);
+
+    ui->VideoWidgetLayout->addWidget(videoWidget);
+    //ui->verticalLayout->setAlignment(videoWidget,Qt::AlignTop);
+    //videoWidget->setGeometry(0,0,0,0);
+    //videoWidget->raise();
+
     videoWidget->setHidden(true);
-    ui->verticalLayout->addWidget(videoWidget);
 
     thread = new QThread();
     worker = new TWorker();
+    worker->imageLabel = ui->imageLabel;///!!!!
+
     worker->moveToThread(thread);
       //connect(worker, SIGNAL(valueChanged(QString)), ui->label, SLOT(setText(QString)));
       connect(worker, SIGNAL(workRequested()), thread, SLOT(start()));
@@ -53,7 +60,6 @@ void info_pannel::DisplayCoverArt(QString path)
     worker->abort();
     thread->wait(); // If the thread is not running, this will immediately return.
 
-    worker->imageLabel = ui->imageLabel;///!!!!
     worker->dirpath = path;
 
     worker->requestWork();
@@ -104,6 +110,6 @@ if(!f.isNull() && f.audioProperties()) {
 
 void info_pannel::setIsVideo(bool bIsVideo){
         ui->imageLabel->setHidden(bIsVideo);
-        ui->MediaInfoWidget->setHidden(bIsVideo);
+        //ui->MediaInfoWidget->setHidden(bIsVideo);
         videoWidget->setHidden(!bIsVideo);
 }

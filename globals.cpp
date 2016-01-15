@@ -22,10 +22,11 @@ void globals::fillPlaylist()
     //qDebug() << albquery.lastError() << _globals->current_selected_pls.toLocal8Bit().toHex();
     while (albquery.next()) { ///Sort by album
         //MyPlayerTreeWidgetItem * albumitem =new MyPlayerTreeWidgetItem(_globals->playlistTree);
-        QTreeWidgetItem * albumitem =new QTreeWidgetItem(_globals->playlistTree);
+        QTreeWidgetItem * albumitem =new QTreeWidgetItem(_globals->playlistTree);//_globals->playlistTree
+        //albumitem->setIcon(0,QIcon(":/Lighttheme/res/lighttheme/MediaInfoWidget/tools-rip-audio-cd.svg"));
         albumitem->setText(0,albquery.value(0).toString());
         albumitem->setExpanded(true);
-
+        //albumitem->
         QSqlQuery query;
         //query.exec("SELECT Id,Track FROM " + _globals->current_selected_pls + " WHERE Album ='" + albquery.value(0).toString()+ "'");
 

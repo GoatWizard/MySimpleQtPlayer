@@ -265,6 +265,7 @@ void  MainWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status)
             qDebug() << "This is video!!!";
             //ipn->ui->MediaInfoWidget->setHidden(true);
             ipn->setIsVideo(true);
+            ipn->DisplayMediaInfo(currentTrackUrl);
         }
         else{
             qDebug() << "This file is audio";
