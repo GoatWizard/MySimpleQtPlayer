@@ -54,20 +54,7 @@ void info_pannel::DisplayCoverArt(QString path)
     thread->wait(); // If the thread is not running, this will immediately return.
 
     worker->imageLabel = ui->imageLabel;///!!!!
-
-    QStringList filters;
-    filters << "*.png" << "*.jpg" << "*.jpe" << "*.JPEG";
-
-    QDirIterator iterator (path, filters, QDir::Files , QDirIterator::Subdirectories);
-
-    while(iterator.hasNext()){
-        iterator.next();
-        qDebug() << "Cover art changing: " << PreviousCoverArt <<  iterator.fileInfo().absoluteFilePath();
-        //ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
-        QPixmap * image = new QPixmap(iterator.fileInfo().absoluteFilePath());
-        worker->CoverArtList.push_back(image);
-    }
-
+    worker->dirpath = path;
 
     worker->requestWork();
 

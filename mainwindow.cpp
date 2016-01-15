@@ -281,7 +281,13 @@ void MainWindow::seekTrack(qint16 offset)
     _globals->current_played_track+=offset;
     if(_globals->current_active_pls == _globals->current_selected_pls){
     _globals->playlistTree->selectedItems().back()->setSelected(false);
-    _globals->TreeItems[_globals->current_played_track-1]->setSelected(true);
+    if(_globals->current_played_track>_globals->TreeItems.size()){
+        _globals->TreeItems[0]->setSelected(true);
+    }
+    else
+    {
+        _globals->TreeItems[_globals->current_played_track-1]->setSelected(true);
+    }
     }
     PlayTrack();
 }

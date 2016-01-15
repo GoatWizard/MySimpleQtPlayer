@@ -23,6 +23,7 @@ public:
 
     QLabel * imageLabel;
     QList<QPixmap *> CoverArtList;
+    QString dirpath;
 private:
     bool _working;
     bool _abort;

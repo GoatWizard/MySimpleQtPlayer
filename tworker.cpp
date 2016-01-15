@@ -1,4 +1,5 @@
 #include "tworker.h"
+#include <QDirIterator>
 
 TWorker::TWorker(QObject *parent) : QObject(parent)
 {
@@ -13,6 +14,31 @@ TWorker::~TWorker()
 
 void TWorker::doWork()
 {
+
+    QStringList filters;
+    filters << "*.png" << "*.jpg" << "*.jpe" << "*.JPEG";
+
+    QDirIterator iterator (dirpath, filters, QDir::Files , QDirIterator::Subdirectories);
+
+    while(iterator.hasNext()){
+        iterator.next();
+        qDebug() << "Cover art changing: " <<  iterator.fileInfo().absoluteFilePath();
+        //QMatrix tMat;
+        //tMat.  // .scale(32,32);
+        //ipn->DisplayCoverArt(iterator.fileInfo().absoluteFilePath());
+       // QPixmap * image = new QPixmap(iterator.fileInfo().absoluteFilePath());
+
+       // QPixmap * image2 = new QPixmap(image->scaled(QSize(256,256),Qt::KeepAspectRatio));
+
+        QPixmap * image2 = new QPixmap(QPixmap(iterator.fileInfo().absoluteFilePath()).scaled(QSize(256,256),Qt::KeepAspectRatio));
+
+        //image->seth
+        //image->load(iterator.fileInfo().absoluteFilePath());
+        CoverArtList.push_back(image2);
+        //delete image;
+        //image = NULL;
+    }
+
 while(!_abort){
     if(!CoverArtList.isEmpty()){
         if(imagecounter<CoverArtList.size()){
