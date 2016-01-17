@@ -284,6 +284,8 @@ void MainWindow::seekTrack(qint16 offset)
     _globals->playlistTree->selectedItems().back()->setSelected(false);
     if(_globals->current_played_track>_globals->TreeItems.size()){
         _globals->TreeItems[0]->setSelected(true);
+        //ui->PlaylistTreeWidget->it
+        _globals->current_played_track=0;
     }
     else
     {

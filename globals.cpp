@@ -11,7 +11,7 @@ globals * _globals;
 
 void globals::fillPlaylist()
 {
-    playlistTree->clear(); //CHECK THIS MAY CAUSE MEMORY LEAK
+    playlistTree->clear();
     TreeItems.clear();
 
     QSqlQuery albquery;
@@ -39,9 +39,9 @@ void globals::fillPlaylist()
         //qDebug() << query.value(1).toString();
         MyPlayerTreeWidgetItem * songitem = new MyPlayerTreeWidgetItem(albumitem);
         songitem->setText(0,query.value(1).toString());
-        //songitem->setText(1,"\nMP3 :: 44kHz, 320 kbps, 8,26MB");
         songitem->IdNum = query.value(0).toUInt();
         TreeItems.push_back(songitem);
+        qDebug() << "song name: " << query.value(1).toString() << " IdNum: " << query.value(0).toUInt();
         }
     }
 }
