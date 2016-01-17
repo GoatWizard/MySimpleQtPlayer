@@ -298,7 +298,7 @@ void MainWindow::seekTrack(qint16 offset)
     else
     {
         if(_globals->current_active_pls == _globals->current_selected_pls){
-        _globals->TreeItems[_globals->current_played_track]->setSelected(true);//-1
+        _globals->TreeItems[_globals->current_played_track]->setSelected(true);
         _globals->current_played_track_id=_globals->TreeItems[_globals->current_played_track]->IdNum;
         }
         qDebug() << "played track Id3: " << _globals->current_played_track_id;

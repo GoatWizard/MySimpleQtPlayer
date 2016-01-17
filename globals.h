@@ -3,6 +3,7 @@
 
 #include <QtSql>
 #include <QTreeWidget>
+#include <QMediaPlaylist>
 
 #include "myplayertreewidgetitem.h"
 
@@ -14,11 +15,13 @@ public:
 
     QString current_selected_pls;
     QString current_active_pls;
+    quint16 current_played_track_id;
     quint16 current_played_track;
 
     QTreeWidget * playlistTree;
     QList <MyPlayerTreeWidgetItem *> TreeItems;
-
+    //QList <MyPlayerTreeWidgetItem *> TempTreeItems;
+    //QMediaPlaylist * playlist;
 };
 
 extern globals * _globals;

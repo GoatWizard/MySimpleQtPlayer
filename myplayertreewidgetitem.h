@@ -11,6 +11,7 @@ public:
     MyPlayerTreeWidgetItem(QTreeWidgetItem * parent, int type = Type);
     //~MyPlayerTreeWidgetItem(){qDebug() << "MyPlayerTreeWidgetItem destructor";}
     quint16 IdNum;
+    quint16 Index;
 };
 
 #endif // MYPLAYERTREEWIDGETITEM_H
