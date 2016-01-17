@@ -175,6 +175,7 @@ void MainWindow::on_PlayButton_clicked()
     _globals->current_played_track_id = selecteditem->IdNum;
     _globals->current_played_track = selecteditem->Index;
     _globals->current_active_pls = _globals->current_selected_pls;
+    _globals->TreeItemsToIDList();
     PlayTrack();
 }
 
@@ -284,13 +285,12 @@ void MainWindow::seekTrack(qint16 offset)
     qDebug() << "played track Id1: " << _globals->current_played_track_id;
     qDebug() << "played track num1: " << _globals->current_played_track;
 
-
-    _globals->playlistTree->selectedItems().back()->setSelected(false);
-    if(_globals->current_played_track+1>_globals->TreeItems.size()){
+    if(_globals->current_played_track+1>_globals->IDList.size()){
         if(_globals->current_active_pls == _globals->current_selected_pls){
+            _globals->playlistTree->selectedItems().back()->setSelected(false);
             _globals->TreeItems[0]->setSelected(true);
-            _globals->current_played_track_id=_globals->TreeItems[0]->IdNum;
         }
+        _globals->current_played_track_id=_globals->IDList[0];
         _globals->current_played_track=0;
         qDebug() << "played track Id2: " << _globals->current_played_track_id;
         qDebug() << "played track num2: " << _globals->current_played_track;
@@ -298,9 +298,10 @@ void MainWindow::seekTrack(qint16 offset)
     else
     {
         if(_globals->current_active_pls == _globals->current_selected_pls){
-        _globals->TreeItems[_globals->current_played_track]->setSelected(true);//-1
-        _globals->current_played_track_id=_globals->TreeItems[_globals->current_played_track]->IdNum;
+            _globals->playlistTree->selectedItems().back()->setSelected(false);
+            _globals->TreeItems[_globals->current_played_track]->setSelected(true);
         }
+        _globals->current_played_track_id=_globals->IDList[_globals->current_played_track];
         qDebug() << "played track Id3: " << _globals->current_played_track_id;
         qDebug() << "played track num3: " << _globals->current_played_track;
     }
@@ -333,6 +334,6 @@ void MainWindow::on_PlaylistTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, 
     _globals->current_played_track_id = ((MyPlayerTreeWidgetItem *)item)->IdNum;
     _globals->current_played_track = ((MyPlayerTreeWidgetItem *)item)->Index;
     _globals->current_active_pls = _globals->current_selected_pls;
-    //qDebug() << "Column is : " << column;
+    _globals->TreeItemsToIDList();
     PlayTrack();
 }

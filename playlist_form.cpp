@@ -57,7 +57,7 @@ void playlist_form::on_PlaylistWidget_itemClicked(QListWidgetItem *item)
      _globals->fillPlaylist();
 
      if(_globals->current_active_pls == _globals->current_selected_pls){ //This is needed to select played song if playlist is changed but any song from it wasn't played.
-     _globals->TreeItems[_globals->current_played_track_id-1]->setSelected(true);
+     _globals->TreeItems[_globals->current_played_track]->setSelected(true);
      }
 }
 

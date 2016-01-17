@@ -48,3 +48,10 @@ void globals::fillPlaylist()
         }
     }
 }
+
+void globals::TreeItemsToIDList(){
+    IDList.clear();
+    for(quint16 c = 0;c<TreeItems.size();c++){
+    IDList.push_back(TreeItems[c]->IdNum);
+    }
+}

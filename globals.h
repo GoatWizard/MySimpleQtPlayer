@@ -12,6 +12,7 @@ class globals
 public:
     globals();
     void fillPlaylist();
+    void TreeItemsToIDList();
 
     QString current_selected_pls;
     QString current_active_pls;
@@ -20,6 +21,7 @@ public:
 
     QTreeWidget * playlistTree;
     QList <MyPlayerTreeWidgetItem *> TreeItems;
+    QList <quint16> IDList;
     //QList <MyPlayerTreeWidgetItem *> TempTreeItems;
     //QMediaPlaylist * playlist;
 };
