@@ -23,17 +23,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
-    ///Setup stylesheet
-    QFile styleSheet(":/styles/res/stylesheets/default.qss");
-
-    if (!styleSheet.open(QIODevice::ReadOnly)) {
-        qWarning("Unable to open :/styles/res/stylesheets/default.qss");
-        return;
-    }
-    else {
-        qApp->setStyleSheet(styleSheet.readAll());
-    }
-
     open_sqlite_db();
     _globals = new globals; // Create an object that stores global variables and functions
 
@@ -56,14 +45,26 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //ui->AddItemsButton->setStyleSheet("");
     QAction * act0 = new QAction("Files",ui->AddItemsButton);
     QAction * act1 = new QAction("Folder",ui->AddItemsButton);
-    //QIcon * icn = new QIcon(":/res/actions/add.png");
-    //act0->setIcon(QIcon(":/res/actions/add.png"));
+    act0->setObjectName("AddFilesItem");
+    act1->setObjectName("AddFolderItem");
     AddItemsMenu->addAction(act0);
     AddItemsMenu->addAction(act1);
+    act0->setIcon(QApplication::style()->standardIcon(QStyle::SP_FileIcon));
+    act1->setIcon(QApplication::style()->standardIcon(QStyle::SP_DirIcon ));
+
     connect(act0,SIGNAL(triggered()),this,SLOT(AddItemsMenuFilesSlot()));
     connect(act1,SIGNAL(triggered()),this,SLOT(AddItemsMenuFolderSlot()));
 
     ui->AddItemsButton->setMenu(AddItemsMenu);
+
+    ///Setup stylesheet
+    QFile styleSheet(":/styles/res/stylesheets/nativelight.qss");
+    if (!styleSheet.open(QIODevice::ReadOnly)) {
+        qWarning("Unable to open styles");
+    }
+    else {
+        qApp->setStyleSheet(styleSheet.readAll());
+    }
 }
 
 MainWindow::~MainWindow()

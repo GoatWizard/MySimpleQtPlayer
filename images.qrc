@@ -3,20 +3,14 @@
         <file>res/qsmp_logo.png</file>
     </qresource>
     <qresource prefix="/">
-        <file>res/actions/add.png</file>
-        <file>res/volume/player-volume.svg</file>
-        <file>res/volume/player-volume-muted.svg</file>
         <file>res/service/edit-find.svg</file>
-        <file>res/playback/media-playback-pause.svg</file>
-        <file>res/playback/media-playback-start.svg</file>
-        <file>res/playback/media-playback-stop.svg</file>
-        <file>res/playback/media-seek-backward.svg</file>
-        <file>res/playback/media-seek-forward.svg</file>
         <file>res/actions/filename-dash-amarok.svg</file>
         <file>res/actions/list-add.svg</file>
     </qresource>
     <qresource prefix="/styles">
-        <file>res/stylesheets/default.qss</file>
+        <file>res/stylesheets/nativedark.qss</file>
+        <file>res/stylesheets/nativelight.qss</file>
+        <file>res/stylesheets/deepdarkfantasy.qss</file>
     </qresource>
     <qresource prefix="/Darktheme">
         <file>res/darktheme/audio-off.svg</file>
@@ -39,5 +33,15 @@
         <file>res/lighttheme/MediaInfoWidget/document-new.svg</file>
         <file>res/lighttheme/MediaInfoWidget/dialog-scripts.svg</file>
         <file>res/lighttheme/MediaInfoWidget/zoom-fit-best.svg</file>
+        <file>res/lighttheme/horizontalLayout/media-playback-pause.svg</file>
+        <file>res/lighttheme/horizontalLayout/media-playback-start.svg</file>
+        <file>res/lighttheme/horizontalLayout/media-playback-stop.svg</file>
+        <file>res/lighttheme/horizontalLayout/media-seek-backward.svg</file>
+        <file>res/lighttheme/horizontalLayout/media-seek-forward.svg</file>
+        <file>res/lighttheme/audio-off.svg</file>
+        <file>res/lighttheme/audio-on.svg</file>
+        <file>res/lighttheme/SearchBar/edit-find.svg</file>
+        <file>res/lighttheme/SearchBar/filename-dash-amarok.svg</file>
+        <file>res/lighttheme/SearchBar/list-add.svg</file>
     </qresource>
 </RCC>

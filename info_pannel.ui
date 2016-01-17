@@ -191,7 +191,7 @@
      </item>
      <item>
       <property name="text">
-       <string>------------------------------------------------</string>
+       <string notr="true">------------------------------------------------</string>
       </property>
      </item>
      <item>
@@ -232,7 +232,7 @@
      </item>
      <item>
       <property name="text">
-       <string>------------------------------------------------</string>
+       <string notr="true">------------------------------------------------</string>
       </property>
      </item>
      <item>

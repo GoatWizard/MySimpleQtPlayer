@@ -8,11 +8,11 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia multimediawidgets
 
-TARGET = MyPlayer
+TARGET = qsmp
 TEMPLATE = app
 
 QMAKE_CXXFLAGS += -std=c++11
-
+QMAKE_CXXFLAGS_RELEASE += -std=c++11 -O2 -march=native -mtune=native -ffast-math
 include(thirdparty/taglib/taglib.pro)
 
 SOURCES += main.cpp\

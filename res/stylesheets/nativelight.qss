@@ -1,0 +1,29 @@
+QPushButton::menu-indicator
+{
+image: "";
+}
+
+QTreeWidget
+{
+    background-color: #FFFFFF;
+    alternate-background-color: #D3E3E8;
+}
+
+
+QTreeWidget::item:has-children
+{
+    color: white;
+    background-color: black;
+}
+
+QCheckBox#MuteButton::indicator:checked {
+    image: url(:/Lighttheme/res/lighttheme/audio-off.svg);
+}
+
+QCheckBox#MuteButton::indicator:unchecked {
+    image: url(:/Lighttheme/res/lighttheme/audio-on.svg);
+}
+
+QMenu::icon {
+    image: url(:/Lighttheme/res/lighttheme/audio-on.svg);
+}

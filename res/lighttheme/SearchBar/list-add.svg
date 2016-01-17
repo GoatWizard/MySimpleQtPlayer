@@ -14,7 +14,7 @@
    id="svg3049"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="player-volume.svg"
+   sodipodi:docname="sc_addprintarea.svg"
    inkscape:export-filename="/home/uri/.kde/share/icons/NITRUX-KDE/16x16/actions/view-right-new.png"
    inkscape:export-xdpi="30"
    inkscape:export-ydpi="30">
@@ -27,25 +27,24 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16.219262"
-     inkscape:cx="11.474804"
-     inkscape:cy="4.2119328"
+     inkscape:zoom="39.774755"
+     inkscape:cx="1.8612358"
+     inkscape:cy="8.3609739"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer1-6"
      showgrid="true"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1024"
-     inkscape:window-height="544"
-     inkscape:window-x="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1021"
+     inkscape:window-x="-4"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:showpageshadow="false"
      borderlayer="true"
      inkscape:snap-bbox="true"
-     inkscape:object-nodes="false"
      inkscape:snap-global="true">
     <inkscape:grid
        type="xygrid"
@@ -59,11 +58,11 @@
        orientation="0,12"
        id="guide4077" />
     <sodipodi:guide
-       position="14.000004,2.0000296"
+       position="14,9"
        orientation="-12,0"
        id="guide4079" />
     <sodipodi:guide
-       position="14.000004,14.00003"
+       position="14,14"
        orientation="0,-12"
        id="guide4081" />
   </sodipodi:namedview>
@@ -75,7 +74,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -84,10 +83,29 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-421.71429,-531.79074)">
-    <path
-       style="fill:#4d4d4d;fill-opacity:1;stroke:none"
-       d="M 8 2 L 4 5.1992188 L 4 10.800781 L 8 14 L 9 14 L 9 2 L 8 2 z M 11.447266 3.1054688 L 10.996094 4.0058594 A 5 4.9999752 0 0 1 13 8 A 5 4.9999752 0 0 1 10.996094 11.990234 L 11.447266 12.896484 A 6 5.9999704 0 0 0 14 8 A 6 5.9999704 0 0 0 11.447266 3.1054688 z M 10 4.5410156 L 10 5.7675781 A 3 2.9999852 0 0 1 11 8 A 3 2.9999852 0 0 1 10 10.230469 L 10 11.458984 A 4 3.9999803 0 0 0 12 8 A 4 3.9999803 0 0 0 10 4.5410156 z M 2 6 L 2 10 L 3 10 L 3 6 L 2 6 z "
-       transform="translate(421.71429,531.79074)"
-       id="path4160" />
+    <g
+       transform="matrix(0.75,0,0,0.74999813,421.46429,-241.22897)"
+       id="layer1-0"
+       inkscape:label="Capa 1">
+      <g
+         transform="translate(6.2937501e-7,-2.041003e-4)"
+         id="layer1-6"
+         inkscape:label="Capa 1">
+        <rect
+           style="fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4141"
+           width="14.66666"
+           height="1.3333367"
+           x="3.000005"
+           y="1041.3624" />
+        <rect
+           style="fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4143"
+           width="1.3333333"
+           height="14.666664"
+           x="9.666666"
+           y="1034.6957" />
+      </g>
+    </g>
   </g>
 </svg>

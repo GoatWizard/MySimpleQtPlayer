@@ -56,6 +56,11 @@
       <attribute name="headerShowSortIndicator" stdset="0">
        <bool>false</bool>
       </attribute>
+      <column>
+       <property name="text">
+        <string notr="true">1</string>
+       </property>
+      </column>
      </widget>
     </item>
     <item row="0" column="2" rowspan="5">
@@ -101,7 +106,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/actions/list-add.svg</normaloff>:/res/actions/list-add.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/SearchBar/list-add.svg</normaloff>:/Lighttheme/res/lighttheme/SearchBar/list-add.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -130,7 +135,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/actions/filename-dash-amarok.svg</normaloff>:/res/actions/filename-dash-amarok.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/SearchBar/filename-dash-amarok.svg</normaloff>:/Lighttheme/res/lighttheme/SearchBar/filename-dash-amarok.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -169,7 +174,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/service/edit-find.svg</normaloff>:/res/service/edit-find.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/SearchBar/edit-find.svg</normaloff>:/Lighttheme/res/lighttheme/SearchBar/edit-find.svg</iconset>
         </property>
        </widget>
       </item>
@@ -196,7 +201,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/playback/media-seek-backward.svg</normaloff>:/res/playback/media-seek-backward.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-seek-backward.svg</normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-seek-backward.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -225,7 +230,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/playback/media-playback-start.svg</normaloff>:/res/playback/media-playback-start.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-playback-start.svg</normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-playback-start.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -254,7 +259,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/playback/media-playback-pause.svg</normaloff>:/res/playback/media-playback-pause.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-playback-pause.svg</normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-playback-pause.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -283,7 +288,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/playback/media-playback-stop.svg</normaloff>:/res/playback/media-playback-stop.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-playback-stop.svg</normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-playback-stop.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -306,7 +311,7 @@
         </property>
         <property name="icon">
          <iconset resource="images.qrc">
-          <normaloff>:/res/playback/media-seek-forward.svg</normaloff>:/res/playback/media-seek-forward.svg</iconset>
+          <normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-seek-forward.svg</normaloff>:/Lighttheme/res/lighttheme/horizontalLayout/media-seek-forward.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
